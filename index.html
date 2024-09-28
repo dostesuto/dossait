@@ -70,6 +70,11 @@
         table.status {
             margin-bottom: 10px;
         }
+
+        .alert {
+            display: none;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -90,6 +95,7 @@
                 <span id="frequencyDisplay">100</span> requests/second
             </div>
         </form>
+        <div class="alert alert-danger" id="alertMessage">Please enter a valid URL.</div>
         <button type="button" class="btn btn-primary" onclick="togglePause();">Start Attack</button>
     </div>
 
@@ -117,6 +123,16 @@
         var CONCURRENCY_LIMIT = 200;
 
         function togglePause() {
+            var url = document.getElementById('targetUrl').value;
+            if (!url) {
+                // URLが入力されていない場合にエラーメッセージを表示
+                document.getElementById('alertMessage').style.display = 'block';
+                return;
+            } else {
+                // URLが入力されたらエラーメッセージを非表示にする
+                document.getElementById('alertMessage').style.display = 'none';
+            }
+
             if (attack) {
                 attack = false;
                 document.querySelector(".btn").innerText = "Start Attack";
@@ -127,7 +143,7 @@
             }
         }
 
-        document.getElementById('attackFrequency').addEventListener('input', function() {
+        document.getElementById('attackFrequency').addEventListener('input', function () {
             document.getElementById('frequencyDisplay').innerText = this.value;
         });
 
